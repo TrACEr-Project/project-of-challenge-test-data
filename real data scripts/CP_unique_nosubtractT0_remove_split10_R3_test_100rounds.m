@@ -229,7 +229,7 @@ kk=0;
 for i=1:2
     for j=1:nm_comp
         kk=kk+1;
-        if i==1
+        if i==2
             subplot(2,nm_comp,kk)
             for k=1:length(Permuted_Fac_M_T)
                 plot(Permuted_Fac_M_T{k}.U{i}(:,j))
