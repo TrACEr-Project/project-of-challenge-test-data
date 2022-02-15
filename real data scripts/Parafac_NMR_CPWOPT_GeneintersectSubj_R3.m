@@ -230,7 +230,7 @@ Z2={'subjects','time','metabolites'};
 figure
 nm_comp=3;
 for i=1:3
-    if i==2
+    if i==3
     for j=1:nm_comp
     subplot(3,nm_comp,(i-1)*nm_comp+j)
     plot(Fac.U{i}(:,j),'-s','Markersize',6,'LineWidth',2)
