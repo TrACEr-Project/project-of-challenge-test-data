@@ -1,5 +1,5 @@
 
-%%%%%% This code is to remove the outlier in the first mode 
+%%%%%% This code is to remove the outlier in the first (subject) mode 
 
 function Y=removeoutlier(Y,outlier_pid)
 

@@ -1,4 +1,6 @@
-function z=TC(X)%X is a cell, TC means Tucker Congurancy
+% This script shows how to compute the Tucker's congruence
+
+function z=TC(X)%X is a cell, TC means Tucker's congruence
 m=length(X);
 for i=1:m(1)
     s=size(X{i});

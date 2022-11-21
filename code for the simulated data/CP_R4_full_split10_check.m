@@ -1,23 +1,27 @@
+% This script shows an example to check the replicability of the CP model to the simulated datasets
 
+% We use Tensor Toolbox as well as the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C
+% In addition, parts of the scripts may require the dataset object (https://eigenvector.com/software/dataset-object/), publically available.
+% For core consistency computation, we also use the corcord function from the Nway toolbox (http://www.models.life.ku.dk/nwaytoolbox).
 
 clear all
 
 %%  load dataset
-load('Simu_6meta_8time_beta02_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_betacell_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_betacell_unbalance.mat','X_orig')
+load('Simu_6meta_8time_alpha02_IRM_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_IRM_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_IRM_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_IRM_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_betacell_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_betacell_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_betacell_unbalance.mat','X_orig')
 
 %% remove subjects with blow-up solution when solving ODE / remove outliers
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});
 outlier_index=[nr_sub_zeros]; 
 outlier_pid=pid_list(outlier_index);
-Y_rem=removeoutlier(X_orig,outlier_pid);
+Y_rem=removesubject(X_orig,outlier_pid);
 
 %% rearrange the data so that all the normal subjects appear first 
 sub_normal=find(Y_rem.class{1,1}==1);
@@ -32,7 +36,7 @@ for kk=1:10
     
     S_perm=[randperm(length(sub_normal)),randperm(length(sub_abnormal))+length(sub_normal)];
     Y_split_left=cell(1,10); % to store the 10 splits in each split10
-    Results=cell(1,10);% to store the results in each split10
+    Results=cell(1,10);% to store the results in each round of split10
     
     
     % randomly remove 1/10 of subjects
@@ -40,7 +44,7 @@ for kk=1:10
         S_perm_rem=S_perm(i:10:end);
         pid_list=str2num(Y_rem.label{1});
         remove_pid=pid_list(S_perm_rem);
-        Y_split_left{i}=removeoutlier(Y_rem,remove_pid') % the data left after removing 1/10 part
+        Y_split_left{i}=removesubject(Y_rem,remove_pid') % the data left after removing 1/10 part
         Results{i}.Sub_rem=S_perm_rem;  % record the position of the removed data
     end
     
@@ -90,13 +94,12 @@ for kk=1:10
             goodness_X(i,1) = out_X{i}.Fit;
             goodness_X(i,2) = out_X{i}.OptOut.err(end,1);
         end
-        % record the results from all initialization for future check
+        % record the results from all initializations for future check
         Results{ii}.Fac_X=Fac_X;
         Results{ii}.cov_info=goodness_X1;
         Results{ii}.er=goodness_X(:,2);
         unique_test = unique_test_CP(Fac_X, goodness_X(:,2), goodness_X1)
         Results{ii}.uniqueness=unique_test;
-        
         
         %Get info for the best Factorization
         [er,index]=sort(goodness_X(:,2),'ascend');
@@ -125,83 +128,42 @@ for kk=1:10
         Results{ii}.pval=pmin;
     end
     
-    R4_Results_CP_all_10split10.results{kk}=Results; % to stop the results in each round of split10
+    Results_all{kk}.Results=Results;
+
 end
 
 
-% %% 
-% save ('R4_Results_CP_all_10split10.mat','R4_Results_CP_all_10split10')
-% 
-% 
-% %% plot factors
-% load('R4_Results_CP_all_10split10.mat','R4_Results_CP_all_10split10')
 
-for kk=1:length(R4_Results_CP_all_10split10)  % loop through each round of split10
-    Results=R4_Results_CP_all_10split10.results{kk};
-    % pick out the metabolites mode and time mode
+%% 
+%   compute the factor match score (FMS) by the two sets of factors (only use the factors on the metabolites and time modes) 
+%   extracted from any two datasets from all splits 
+
+for kk=1:10
     for ii=1:10
-        Fac_rem_submode{(kk-1)*10+ii}=ktensor(Results{ii}.Fac.lambda,Results{ii}.Fac.U{2},Results{ii}.Fac.U{3});
+        Fac_rem_submode{(kk-1)*10+ii}=ktensor(Results_all{kk}.Results{ii}.Fac.lambda,...
+                                              Results_all{kk}.Results{ii}.Fac.U{2},...
+                                              Results_all{kk}.Results{ii}.Fac.U{3});
     end
 end
+m=0;
 for k=1:length(Fac_rem_submode)
-    
-    [scores_M_T(k), Permuted_Fac_M_T{k}] = score(Fac_rem_submode{k},Fac_rem_submode{1},'lambda_penalty',false);
-    
+    for l=k+1:length(Fac_rem_submode)
+        m=m+1;
+        [scores_M_T(m), Permuted_Fac_M_T{m}] = score(Fac_rem_submode{k},Fac_rem_submode{l},'lambda_penalty',false);
+    end
 end
 
-figure
-h=histogram(scores_M_T,'Normalization','probability');
+f=figure;
+h=histogram(scores_M_T,[0:0.1:1],'Normalization','probability');
 xlim([0 1])
-xlabel('Factor match score')
+xticks([0 0.5 0.9 1.0])
+xlabel('FMS')
 ylabel('Frequency')
-title('4-comp CP model')
+set(gca,'Fontsize',18)
+ylim([0 1.0])
+yticks([0:0.1:1.0])
 set(gca,'Fontsize',18)
 
-% flip the sign to make the factors comparable
-nm_comp=4;
-for k=1:length(Fac_rem_submode)
-    for j=1:nm_comp
-        if Permuted_Fac_M_T{k}.U{2}(:,j)'*Permuted_Fac_M_T{1}.U{2}(:,j)<0
-            Permuted_Fac_M_T{k}.U{2}(:,j)=-Permuted_Fac_M_T{k}.U{2}(:,j);
-        end
-        if Permuted_Fac_M_T{k}.U{1}(:,j)'*Permuted_Fac_M_T{1}.U{1}(:,j)<0
-            Permuted_Fac_M_T{k}.U{1}(:,j)=-Permuted_Fac_M_T{k}.U{1}(:,j);
-        end
-    end
-    
-    
-end
-
-
-figure
-labelss = {'Ins_B','GLC_B','Pyr_B','Lac_B','Ala_B','Bhb_B'};
-kk=0;
-for i=1:2
-    for j=1:nm_comp
-        kk=kk+1;
-        if i==1
-            subplot(2,nm_comp,kk)
-            for k=1:length(Permuted_Fac_M_T)
-                plot(Permuted_Fac_M_T{k}.U{i}(:,j))
-                hold on
-            end
-            ylim([-1 1])
-            set(gca,'xtick',1:length(Permuted_Fac_M_T{k}.U{i}(:,j)),'xticklabel',labelss)
-            xtickangle(90)
-            ylabel(['comp', num2str(j)])
-            grid on
-        else
-            subplot(2,nm_comp,kk)
-            for k=1:length(Permuted_Fac_M_T)
-                plot(Permuted_Fac_M_T{k}.U{i}(:,j))
-                hold on
-            end
-            ylabel(['comp', num2str(j)])
-            grid on
-            
-        end
-    end
-end
 
 
 

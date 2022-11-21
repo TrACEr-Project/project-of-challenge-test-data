@@ -1,36 +1,43 @@
+% This script shows an example to fit a CP model to the full-dynamic data from the simulated datasets.
+
+% We use Tensor Toolbox as well as the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C
+% In addition, parts of the scripts may require the dataset object (https://eigenvector.com/software/dataset-object/), publically available.
+% For core consistency computation, we also use the corcord function from the Nway toolbox (http://www.models.life.ku.dk/nwaytoolbox).
+
 
 clear all
 
-%%  load dataset
-load('Simu_6meta_8time_beta02_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_betacell_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_betacell_unbalance.mat','X_orig')
+%%  load data set
+load('Simu_6meta_8time_alpha02_IRM_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_IRM_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_IRM_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_IRM_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_betacell_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_betacell_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_betacell_unbalance.mat','X_orig')
 
 %% remove subjects with blow-up solution when solving ODE / remove outliers
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});
-outlier_index=[nr_sub_zeros]; 
+outlier_index=[nr_sub_zeros];
 outlier_pid=pid_list(outlier_index);
-X_rem=removeoutlier(X_orig,outlier_pid);
+X_rem=removesubject(X_orig,outlier_pid);
 
-%% consider the T0 subtracted data
-X=X_rem.data(:,:,2:end)-X_rem.data(:,:,1);
+
+%% full dynamic data
+X=X_rem.data;
 s=size(X);
+
 
 %% find index for normal and abnormal subjects
 sub_normal=find(X_rem.class{1,1}==1);
 sub_abnormal=find(X_rem.class{1,1}==2);
 
 
-
 %% plot the raw data
-labelss = {'Ins_B','GLC_B','Pyr_B','Lac_B','Ala_B','Bhb_B'};
-time_value=[0.25 0.5 1 1.5 2 2.5 4];
+labelss = {'Ins','GLC','Pyr','Lac','Ala','Bhb'};
+time_value=[0 0.25 0.5 1 1.5 2 2.5 4];
 figure
 for i=1:s(2)
     subplot(2,3,i)
@@ -42,9 +49,6 @@ for i=1:s(2)
         plot(time_value,squeeze(X(sub_abnormal(j),i,:)),'b')
         hold on
     end
-%     plot(time_value,squeeze(mean(X(sub_normal,i,:),1)),'k','Linewidth',3)
-%         hold on
-%     plot(time_value,squeeze(mean(X(sub_abnormal,i,:),1)),'g','Linewidth',3)
     grid on
     xlabel('time(h)')
     ylabel('mmol/L')
@@ -57,9 +61,9 @@ end
 
 %% univariate analysis
 for k=1:s(3)
-for j=1:s(2)
-    [h, p_time_meta(k,j), ~, tt]=ttest2(squeeze(X(sub_normal,j,k)), squeeze(X(sub_abnormal,j,k)), 'alpha', 0.05, 'vartype','unequal');
-end
+    for j=1:s(2)
+        [h, p_time_meta(k,j), ~, tt]=ttest2(squeeze(X(sub_normal,j,k)), squeeze(X(sub_abnormal,j,k)), 'alpha', 0.05, 'vartype','unequal');
+    end
 end
 
 
@@ -72,7 +76,7 @@ X_centered = reshape(temp_centered, size(X));
 for j=1:size(X_centered,2)
     temp = squeeze(X_centered(:,j,:));
     rms = sqrt(mean((temp(:).^2)));
-    X_scal(:,j,:) = temp/rms;    
+    X_scal(:,j,:) = temp/rms;
 end
 X=tensor(X_scal);
 
@@ -126,44 +130,13 @@ end
 % 0 -> NOT unique
 % 1 -> Unique
 % 2 -> Inconclusive, need more random starts
-good_flag = find(goodness_X1(:) == 'CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_<=_PGTOL.' | goodness_X1(:) == 'CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH.');
-if length(good_flag)>=1
-    F_round = round(goodness_X(good_flag,2),7);
-    best_F_index = good_flag(F_round == min(F_round));
-    if length(best_F_index) < 2
-        F_round = round(goodness_X(good_flag,2),5);
-        best_F_index = good_flag(F_round == min(F_round));
-    end
-else
-    F_round = round(goodness_X(:,2),10);
-    best_F_index = find(F_round == min(F_round));
-end
+unique_test = unique_test_CP(Fac_X, goodness_X(:,2), goodness_X1)
 
-eps = .05;
-if length(best_F_index)==1
-    unique_test = 2;
-    disp('Need more random starts to determine uniqueness')
-    worst_check = 0;
-elseif length(best_F_index) > 1
-    check_matrix = zeros(length(best_F_index));
-    for i = 1:length(best_F_index)
-        for j = 1:length(best_F_index)
-            check_matrix(i,j) = score(Fac_X{best_F_index(j)},Fac_X{best_F_index(i)},'lambda_penalty',false);
-        end
-    end
-    worst_check = min(min(check_matrix));
-    if worst_check < (1-eps) %Checks to see if factors are the same if F is
-        unique_test = 0;
-    else
-        unique_test = 1;
-    end
-end
-
-%%  Get the best Factorization & fit,TC, CC info 
+%%  Get the best Factorization & fit,TC, CC info
 [er,index]=sort(goodness_X(:,2),'ascend');
-Fac = Fac_X{index(1)}; 
+Fac = Fac_X{index(1)};
 out_X_best = out_X{index(1)};
-exit_info=goodness_X1(best_F_index(1))
+exit_info=goodness_X1(index(1))
 uniqueness=unique_test
 fit=out_X_best.Fit
 Consistency = corcond(X.data,normalize(Fac,1),[],0)
@@ -181,6 +154,7 @@ end
 %% plot the factors
 Z2={'subjects','metabolites','time'};
 xvalue=1:length(Fac.U{1}(:,1));
+time_value=[0 0.25 0.5 1 1.5 2 2.5 4];
 figure
 k=0;
 for i=1:3
@@ -193,9 +167,11 @@ for i=1:3
             hold on
             ylabel(['comp', num2str(j) ],'FontSize', 10)
             grid on
-               ylim([min(min(Fac.U{i})),max(max(Fac.U{i}))])
+            ylim([min(min(Fac.U{i})),max(max(Fac.U{i}))])
             set(gca,'xtick',1:length(Fac.U{i}(:,j)),'xticklabel',labelss)
             xtickangle(90)
+            ylabel(['b_',num2str(j)],'fontweight','bold')
+            set(gca,'Fontsize',15)
         end
     elseif i==1
         
@@ -207,10 +183,13 @@ for i=1:3
             hold on
             plot(xvalue(sub_abnormal),Fac.U{i}(sub_abnormal,j),'bs','MarkerSize',6,...
                 'MarkerEdgeColor','b','MarkerFaceColor','b')
-            grid on
-               ylim([min(min(Fac.U{i})),max(max(Fac.U{i}))])
-            ylabel(['comp', num2str(j) ],'FontSize', 10)
+            if j==4
+                legend('control','diseased')
+            end
+            ylim([min(min(Fac.U{i})),max(max(Fac.U{i}))])
+            ylabel(['a_',num2str(j)],'fontweight','bold')
             xlabel(Z2{i})
+            set(gca,'Fontsize',15)
         end
     else
         
@@ -222,8 +201,9 @@ for i=1:3
             hold on
             grid on
             ylim([min(min(Fac.U{i})),max(max(Fac.U{i}))])
-            ylabel(['comp', num2str(j) ],'FontSize', 10)
-           xlabel('time(h)')
+            ylabel(['c_',num2str(j)],'fontweight','bold')
+            xlabel('time(h)')
+            set(gca,'Fontsize',15)
         end
     end
     
@@ -231,41 +211,43 @@ for i=1:3
 end
 
 
-%% scatter plot for subjects mode and metabolites mode
-% %%
+
+% %% scatter plot for subjects mode and metabolites mode
 % i=1;
 % for j=1:nm_comp
 %     for k=j+1:nm_comp
-% figure
-%       
-% 
-%             plot(Fac.U{i}(sub_normal,j),Fac.U{i}(sub_normal,k),'rs','MarkerSize',6,...
-%                 'MarkerEdgeColor','r','MarkerFaceColor','r')
-%             hold on
-%             plot(Fac.U{i}(sub_abnormal,j),Fac.U{i}(sub_abnormal,k),'bs','MarkerSize',6,...
-%                 'MarkerEdgeColor','b','MarkerFaceColor','b')
-%             grid on
-%             xlabel(['comp', num2str(j) ],'FontSize', 10)
-%             ylabel(['comp', num2str(k) ],'FontSize', 10)
-%             set(gca,'Fontsize',13)
+%         figure
+%         
+%         
+%         plot(Fac.U{i}(sub_normal,j),Fac.U{i}(sub_normal,k),'rs','MarkerSize',6,...
+%             'MarkerEdgeColor','r','MarkerFaceColor','r')
+%         hold on
+%         plot(Fac.U{i}(sub_abnormal,j),Fac.U{i}(sub_abnormal,k),'bs','MarkerSize',6,...
+%             'MarkerEdgeColor','b','MarkerFaceColor','b')
+%         grid on
+%         xlabel(['a_',num2str(j)],'fontweight','bold')
+%         ylabel(['a_',num2str(k)],'fontweight','bold')
+%         legend('control','diseased')
+%         title('subjects')
+%         set(gca,'Fontsize',15)
 %     end
 % end
-% %%
 % i=2;
 % for j=1:nm_comp
 %     for k=j+1:nm_comp
-% figure
-% 
-% plot(Fac.U{i}(:,j), Fac.U{i}(:,k),'ro','MarkerFaceColor','r');
+%         figure
+%         
+%         plot(Fac.U{i}(:,j), Fac.U{i}(:,k),'ro','MarkerFaceColor','r');
 %         text(Fac.U{i}(:,j), Fac.U{i}(:,k),labelss,'VerticalAlignment','bottom','HorizontalAlignment','right','FontSize', 15,'fontweight', 'bold')
 %         xlabel(['PC',num2str(i)])
 %         ylabel(['PC',num2str(j)])
 %         grid on
 %         set(gca,'Fontsize',15)
-%               grid on
-%             xlabel(['comp', num2str(j) ],'FontSize', 10)
-%             ylabel(['comp', num2str(k) ],'FontSize', 10)
-%             set(gca,'Fontsize',13)
+%         grid on
+%         title('metabolites')
+%         xlabel(['b_',num2str(j)],'fontweight','bold')
+%         ylabel(['b_',num2str(k)],'fontweight','bold')
+%         set(gca,'Fontsize',15)
 %     end
 % end
 

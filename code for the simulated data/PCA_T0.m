@@ -1,23 +1,23 @@
-
+% This script shows how to fit the PCA model using the svd algorithm to the simulated data set 
 
 clear all
 
 %%  load dataset
-load('Simu_6meta_8time_beta02_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_beta02_betacell_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_beta04_betacell_unbalance.mat','X_orig')
+load('Simu_6meta_8time_alpha02_IRM_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_IRM_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_IRM_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_IRM_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_betacell_balance.mat','X_orig')
+% load('Simu_6meta_8time_alpha02_betacell_unbalance.mat','X_orig')
+% load('Simu_6meta_8time_alpha04_betacell_unbalance.mat','X_orig')
 
 %% remove subjects with blow-up solution when solving ODE / remove outliers
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});
 outlier_index=[nr_sub_zeros]; 
 outlier_pid=pid_list(outlier_index);
-X_rem=removeoutlier(X_orig,outlier_pid);
+X_rem=removesubject(X_orig,outlier_pid);
 
 
 %% consider the T0 data
@@ -42,27 +42,6 @@ for i=1:size(T0_T0,2)
     rms=sqrt(mean(T0_T0(:,i).^2));
     T0_scal(:,i)=T0_T0(:,i)/rms;
 end
-
-
-%% plot the preprocessed data
-labelss = {'Ins_B','GLC_B','Pyr_B','Lac_B','Ala_B','Bhb_B'};
-figure
-for j=1:length(sub_normal)
-    plot(1:s(2),T0_scal(sub_normal(j),:),'ro')
-    hold on
-end
-for j=1:length(sub_abnormal)
-    plot(1:s(2),T0_scal(sub_abnormal(j),:),'bo')
-    hold on
-end
-xlim([1 s(2)]);
-
-set(gca,'xtick',1:s(2),'xticklabel',labelss)
-xtickangle(90)
-ylabel('Preprocessed data')
-set(gca,'FontSize', 15)
-
-
 
 
 %% perform svd
@@ -97,33 +76,36 @@ PC_exp=round(PC_exp,0);
 
 
 
-%% plot the factor plots
-x_points=1:size(U,1);
-figure
-for i=1:nm_comp
-    subplot(2,nm_comp,i)
-    plot(x_points(sub_normal), U(sub_normal,i),'rs','Markersize',6,'LineWidth',2);
-    
-    hold on
-    plot(x_points(sub_abnormal), U(sub_abnormal,i),'bs','Markersize',6,'LineWidth',2);
-    grid on
-    ylabel(['PC',num2str(i),'-',num2str(PC_exp(i)),'%'])
-    set(gca,'Fontsize',13)
-end
-for i=1:nm_comp
-    subplot(2,nm_comp,nm_comp+i)
-    plot(1:length(V(:,i)), V(:,i),'-o','LineWidth',2);
-    grid on
-    ylabel(['PC',num2str(i),'-',num2str(PC_exp(i)),'%'])
-    xtickangle(90)
-    set(gca,'xtick',1:length(V(:,i)),'xticklabel',labelss)
-    set(gca,'Fontsize',13)
-end
+% %% plot the factor plots
+labelss = {'Ins','GLC','Pyr','Lac','Ala','Bhb'};
+k=0;
+% x_points=1:size(U,1);
+% figure
+% for i=1:nm_comp
+%     subplot(2,nm_comp,i)
+%     plot(x_points(sub_normal), U(sub_normal,i),'rs','Markersize',6,'LineWidth',2);
+%     
+%     hold on
+%     plot(x_points(sub_abnormal), U(sub_abnormal,i),'bs','Markersize',6,'LineWidth',2);
+%     grid on
+%     ylabel(['PC',num2str(i),'-',num2str(PC_exp(i)),'%'])
+%     set(gca,'Fontsize',13)
+% end
+% for i=1:nm_comp
+%     subplot(2,nm_comp,nm_comp+i)
+%     plot(1:length(V(:,i)), V(:,i),'-o','LineWidth',2);
+%     grid on
+%     ylabel(['PC',num2str(i),'-',num2str(PC_exp(i)),'%'])
+%     xtickangle(90)
+%     set(gca,'xtick',1:length(V(:,i)),'xticklabel',labelss)
+%     set(gca,'Fontsize',13)
+% end
 
 
 
 
 %% the sactter plot
+labelss = {'Ins','GLC','Pyr','Lac','Ala','Bhb'};
 k=0;
 for i=1:nm_comp
     for j=i+1:nm_comp
