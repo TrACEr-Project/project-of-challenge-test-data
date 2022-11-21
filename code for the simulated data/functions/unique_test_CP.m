@@ -1,17 +1,15 @@
 % This script shows how to numerically check the uniqueness of the CP factorization
 
-function unique_index=unique_test_CP(Fac_X, erF, goodness_X1)
-
-
+%%%%%% Input
 % Fac_X: the factors obtained using different initializations
 % erF: the error of the function value for each initialization
 % goodness_X1: the convergence information
-
-%% uniqueness test
+%%%%%% Output
 % unique_index=0 -> NOT unique
 % unique_index=1 -> Unique
 % unique_index=2 -> Inconclusive, need more random starts
 
+function unique_index=unique_test_CP(Fac_X, erF, goodness_X1)
 
 switch nargin
     case 3
@@ -48,7 +46,7 @@ elseif length(best_F_index) > 1
         end
     end
     worst_check = min(min(check_matrix));
-    if worst_check < (1-eps) %Checks to see if factors are the same if F is
+    if worst_check < (1-eps) 
         unique_index = 0;
     else
         unique_index = 1;

@@ -2,16 +2,13 @@
 
 clear all
 
-%%  load dataset
-load('Simu_6meta_8time_alpha02_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha02_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha02_betacell_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_betacell_unbalance.mat','X_orig')
+%% add auxilary functions to path
+addpath(genpath('.\functions'))
+%% add dataset path
+addpath(genpath('..\simulated_datasets\Betacell_dysfunction'))
 
+%%  load dataset
+load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
 %% remove subjects with blow-up solution when solving ODE / remove outliers
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});

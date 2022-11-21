@@ -1,4 +1,4 @@
-% This script shows an example to fit a CP model to the full-dynamic data from the simulated datasets.
+% This script shows an example to fit a CP model to the T0-corrected data from the simulated datasets.
 
 % We use Tensor Toolbox as well as the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C
 % In addition, parts of the scripts may require the dataset object (https://eigenvector.com/software/dataset-object/), publically available.
@@ -7,16 +7,19 @@
 
 clear all
 
-%%  load data set
-load('Simu_6meta_8time_alpha02_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_IRM_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha02_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_IRM_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_betacell_balance.mat','X_orig')
-% load('Simu_6meta_8time_alpha02_betacell_unbalance.mat','X_orig')
-% load('Simu_6meta_8time_alpha04_betacell_unbalance.mat','X_orig')
+%% add auxilary functions to path
+addpath(genpath('.\functions'))
+%% add dataset path
+addpath(genpath('..\simulated_datasets\Betacell_dysfunction'))
+%% add other apckages to your path!
+addpath(genpath('...\tensor_toolbox-v3.1')) %Tensor toolbox is needed;  MATLAB Tensor Toolbox. Copyright 2017, Sandia Corporation, http://www.tensortoolbox.org/
+addpath(genpath('...\L-BFGS-B-C-master')) % LBFGS-B implementation is needed; download here: https://github.com/stephenbeckr/L-BFGS-B-C
+addpath(genpath('...\nway331')) % Nway toolbox is needed for computing core consistency; download here: http://www.models.life.ku.dk/nwaytoolbox
+addpath(genpath('...\dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
 
+
+%%  load dataset
+load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
 %% remove subjects with blow-up solution when solving ODE / remove outliers
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});
@@ -24,39 +27,13 @@ outlier_index=[nr_sub_zeros];
 outlier_pid=pid_list(outlier_index);
 X_rem=removesubject(X_orig,outlier_pid);
 
-
-%% full dynamic data
-X=X_rem.data;
+%% consider the T0 subtracted data
+X=X_rem.data(:,:,2:end)-X_rem.data(:,:,1);
 s=size(X);
-
 
 %% find index for normal and abnormal subjects
 sub_normal=find(X_rem.class{1,1}==1);
 sub_abnormal=find(X_rem.class{1,1}==2);
-
-
-%% plot the raw data
-labelss = {'Ins','GLC','Pyr','Lac','Ala','Bhb'};
-time_value=[0 0.25 0.5 1 1.5 2 2.5 4];
-figure
-for i=1:s(2)
-    subplot(2,3,i)
-    for j=1:length(sub_normal)
-        plot(time_value,squeeze(X(sub_normal(j),i,:)),'r')
-        hold on
-    end
-    for j=1:length(sub_abnormal)
-        plot(time_value,squeeze(X(sub_abnormal(j),i,:)),'b')
-        hold on
-    end
-    grid on
-    xlabel('time(h)')
-    ylabel('mmol/L')
-    xticks(0:4);
-    title(labelss(i))
-    set(gca,'FontSize', 15)
-end
-
 
 
 %% univariate analysis
@@ -79,25 +56,6 @@ for j=1:size(X_centered,2)
     X_scal(:,j,:) = temp/rms;
 end
 X=tensor(X_scal);
-
-
-%% plot the preprocessed data
-figure
-for i=1:s(2)
-    subplot(2,3,i)
-    for j=1:length(sub_normal)
-        plot(time_value,squeeze(X.data(sub_normal(j),i,:)),'r')
-        hold on
-    end
-    for j=1:length(sub_abnormal)
-        plot(time_value,squeeze(X.data(sub_abnormal(j),i,:)),'b')
-        hold on
-    end
-    xticks(0:4);
-    xlabel('time(h)')
-    title(labelss(i))
-    set(gca,'FontSize', 15)
-end
 
 
 %% CP MODEL
@@ -153,8 +111,9 @@ end
 
 %% plot the factors
 Z2={'subjects','metabolites','time'};
+labelss = {'Ins','GLC','Pyr','Lac','Ala','Bhb'};
 xvalue=1:length(Fac.U{1}(:,1));
-time_value=[0 0.25 0.5 1 1.5 2 2.5 4];
+time_value=[0.25 0.5 1 1.5 2 2.5 4];
 figure
 k=0;
 for i=1:3
@@ -171,7 +130,7 @@ for i=1:3
             set(gca,'xtick',1:length(Fac.U{i}(:,j)),'xticklabel',labelss)
             xtickangle(90)
             ylabel(['b_',num2str(j)],'fontweight','bold')
-            set(gca,'Fontsize',15)
+             set(gca,'Fontsize',15)
         end
     elseif i==1
         
@@ -189,7 +148,7 @@ for i=1:3
             ylim([min(min(Fac.U{i})),max(max(Fac.U{i}))])
             ylabel(['a_',num2str(j)],'fontweight','bold')
             xlabel(Z2{i})
-            set(gca,'Fontsize',15)
+             set(gca,'Fontsize',15)
         end
     else
         
@@ -211,43 +170,4 @@ for i=1:3
 end
 
 
-
-% %% scatter plot for subjects mode and metabolites mode
-% i=1;
-% for j=1:nm_comp
-%     for k=j+1:nm_comp
-%         figure
-%         
-%         
-%         plot(Fac.U{i}(sub_normal,j),Fac.U{i}(sub_normal,k),'rs','MarkerSize',6,...
-%             'MarkerEdgeColor','r','MarkerFaceColor','r')
-%         hold on
-%         plot(Fac.U{i}(sub_abnormal,j),Fac.U{i}(sub_abnormal,k),'bs','MarkerSize',6,...
-%             'MarkerEdgeColor','b','MarkerFaceColor','b')
-%         grid on
-%         xlabel(['a_',num2str(j)],'fontweight','bold')
-%         ylabel(['a_',num2str(k)],'fontweight','bold')
-%         legend('control','diseased')
-%         title('subjects')
-%         set(gca,'Fontsize',15)
-%     end
-% end
-% i=2;
-% for j=1:nm_comp
-%     for k=j+1:nm_comp
-%         figure
-%         
-%         plot(Fac.U{i}(:,j), Fac.U{i}(:,k),'ro','MarkerFaceColor','r');
-%         text(Fac.U{i}(:,j), Fac.U{i}(:,k),labelss,'VerticalAlignment','bottom','HorizontalAlignment','right','FontSize', 15,'fontweight', 'bold')
-%         xlabel(['PC',num2str(i)])
-%         ylabel(['PC',num2str(j)])
-%         grid on
-%         set(gca,'Fontsize',15)
-%         grid on
-%         title('metabolites')
-%         xlabel(['b_',num2str(j)],'fontweight','bold')
-%         ylabel(['b_',num2str(k)],'fontweight','bold')
-%         set(gca,'Fontsize',15)
-%     end
-% end
 

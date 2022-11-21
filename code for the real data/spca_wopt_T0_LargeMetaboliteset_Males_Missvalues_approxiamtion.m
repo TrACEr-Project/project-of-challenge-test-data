@@ -13,9 +13,14 @@
 clear all
 clc
 close all
+%% add auxilary functions to path
+addpath(genpath('.\functions'))
+addpath(genpath('.\functions\spca_wopt_functions'))
+
+%% add other apckages to your path!
+addpath(genpath('...\dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
+addpath(genpath('...\poblano_toolbox_1.1')) % Poblano_toolbox is needed; download here: https://github.com/sandialabs/poblano_toolbox
 %%
-folder = fileparts(which('spca_wopt_T0_LargeMetaboliteset_Males_Missvalues_approxiamtion')); 
-addpath(genpath(folder));
 load('NMR+Gene+SNP+Metav3_July4_2022.mat') %% load data
 
 %% remove outliers

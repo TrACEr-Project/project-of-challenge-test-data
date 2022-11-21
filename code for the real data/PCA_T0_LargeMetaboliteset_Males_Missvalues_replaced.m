@@ -7,8 +7,13 @@
 clear all
 clc
 close all
+%% add auxilary functions to path
+addpath(genpath('.\functions'))
+%% add other apckages to your path!
+addpath(genpath('...\dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
+
 %%
-load('NMR+Gene+SNP+Metav3_July4_2022.mat') %% load data
+load('NMR+Gene+SNP+Metav3_July4_2022.mat') %% load the real data
 
 %% remove outliers
 pid_list = str2num(NMR.label{1});

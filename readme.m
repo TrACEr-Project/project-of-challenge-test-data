@@ -36,29 +36,36 @@
 
 %% Descriptions of the codes under the folder 'code for the simulated data'
 
-%  The file named 'CP_unique_fulldata.m' is an example code for modeling the full-dynamic data
+%  The file named 'CP_fulldata.m' is an example code for modeling the full-dynamic data
 %  with CP model using the tensor toolbox with multiple initialisations.
-%  To run the code, tensor toolbox as well as
-%  the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C is needed.
+%  To run the code, tensor toolbox and the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C are needed.
 
-%  The file named 'CP_unique_subtractT0.m' is an example code for modeling the T0-corrected data
+%  The file named 'CP_subtractT0.m' is an example code for modeling the T0-corrected data
 %  with CP model using the tensor toolbox with multiple initialisations.
-%  To run the code, tensor toolbox as well as
-%  the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C is needed.
+%  To run the code, tensor toolbox and the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C are needed.
 
 
 %  The file named 'CP_R4_full_split10_check.m' is an example code for
 %  checking the replicability of the CP model to the full-dynamic data.
-%  To run the code, tensor toolbox as well as
-%  the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C is needed.
-%  The function removesubject.m is also needed to remove a subset of subjects from the considered dataset.
-
+%  To run the code, tensor toolbox and the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C are needed.
 
 %  The file named 'PCA_T0.m' is an example code for  modeling the fasting-state (T0) data
 %  with PCA model using the svd function from Matlab.
 
 
-%%%%%  codes and data under the subfolder 'Insulin resistance in Skeletal muscle'
+
+%%%%%%%%%%%%  codes and data under the subfolder 'functions'
+%  The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
+
+%  The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
+
+%  The file named 'TC.m' is for computing the Tucker congruency
+
+
+
+
+%%%%%%%%%%%%  codes and data under the under the subfolder 'stability_CP_factors'
+%%%%%  codes and data under the subsubfolder 'Insulin resistance in Skeletal muscle' 
 %  The file named 'compare_diffalpha_balance_unbalance_full.m' is for
 %  comparing (computing the factor match scores) the factors extracted from
 %  the full-dynamic data from different datasets (low vs. high within-group variation and balanced
@@ -106,9 +113,7 @@
 % as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.4. 
 
 
-
-
-%%%%%  codes and data under the subfolder 'Betacell dysfunction'
+%%%%%  codes and data under the subsubfolder 'Betacell dysfunction'
 %  The file named 'compare_diffalpha_balance_unbalance_full.m' is for
 %  comparing (computing the factor match scores) the factors extracted from
 %  the full-dynamic data from different datasets (low vs. high within-group variation and balanced
@@ -155,53 +160,42 @@
 
 
 
-%% Descriptions of the codes under the folder 'code for the real and simulated data'
-
-%  The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
-%  To run the code, tensor toolbox is needed.
-
-%  The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
-
-%  The file named 'TC.m' is for computing the Tucker congruency
-
-
-
 
 %% Descriptions of the codes under the folder 'code for the real data'
 
 %  The file named 'CP_T0corrected_LargeMetaboliteset_Males.m' is the
 %  code for  modeling the T0-corrected real data (only male subjects and 162 measurements)
 %  with CP model using the tensor toolbox with multiple initialisations.
-%  To run the code, tensor toolbox as well as
-%  the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C is needed.
-%  To run the code, the function removesubject.m is used to remove the outlier subjects, 
-%  the function unique_test_CP.m is used to numerically check the uniqueness of the CP factorization, 
-%  the function removeisnan.m is used to remove the subjects with lots of missing values, and the function TC.m is used to
-%  compute the Tucker congruence. 
-
+%  To run the code, tensor toolbox and the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C are needed.
 
 %  The file named 'CP_R2_T0subtr_split10_check.m' is an example code for
 %  checking the replicability of the CP model to the T0-corrected real data.
-%  To run the code, tensor toolbox as well as
-%  the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C is needed.
-%  The function removesubject.m is also needed to remove a subset of
-%  subjects from the considered dataset.
+%  To run the code, tensor toolbox and the L-BFGS-B implementation from https://github.com/stephenbeckr/L-BFGS-B-C are needed.
 
 %  The file named 'spca_wopt_T0_LargeMetaboliteset_Males_Missvalues_approxiamtion' is for
 %  computing the approximations of the missing values in the fasting-state
 %  real data using the weighted optimization (see the work ' Scalable tensor factorizations for incomplete data' by E. Acar, 
 %  D.M. Dunlavy, T.G. Kolda, and M. Mørup).
-%  To run the code, the Poblano Toolbox from https://github.com/sandialabs/poblano_toolbox is needed. 
-%  To run the code, the functions in the folder 'spca_wopt functions' are
-%  needed, and the function removesubject.m is used to remove the outlier
-%  subjects.
-
 
 %  The file named 'PCA_T0_LargeMetaboliteset_Males_Missvalues_replaced.m'
 %  is for modeling the fasting-state real data with PCA model using the svd function from Matlab, 
 %  missing values being replaced by approximations.
-%  To run the code, the function removesubject.m is used to remove the outlier subjects.
 
+
+%%%%%%%%%%%%  codes under the subfolder 'functions'
+%  The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
+
+%  The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
+
+%  The file named 'TC.m' is for computing the Tucker congruency
+
+%  The file named 'removeisnan.m' is used to remove the subjects and features with lots of missing values
+
+%%%%%  codes under the subsubfolder 'spca_wopt_functions'
+%  The functions in this subsubfolder are used to use weighted optimization for fitting PCA to incomplete data, 
+%  similarly as the way to fit the CP model to incomplete data 
+%  introduced in the paper ' Scalable tensor factorizations for incomplete data' by E. Acar, 
+%  D.M. Dunlavy, T.G. Kolda, and M. Mørup.  
 
 
 
