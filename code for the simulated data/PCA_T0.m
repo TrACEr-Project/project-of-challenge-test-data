@@ -69,36 +69,6 @@ set(gca,'Fontsize',15)
 PC_exp(1)=Epval(1);
 PC_exp(2:length(Epval))=Epval(2:end)-Epval(1:end-1);
 PC_exp=round(PC_exp,0);
-%%
-
-
-
-% %% plot the factor plots
-labelss = {'Ins','GLC','Pyr','Lac','Ala','Bhb'};
-k=0;
-% x_points=1:size(U,1);
-% figure
-% for i=1:nm_comp
-%     subplot(2,nm_comp,i)
-%     plot(x_points(sub_normal), U(sub_normal,i),'rs','Markersize',6,'LineWidth',2);
-%     
-%     hold on
-%     plot(x_points(sub_abnormal), U(sub_abnormal,i),'bs','Markersize',6,'LineWidth',2);
-%     grid on
-%     ylabel(['PC',num2str(i),'-',num2str(PC_exp(i)),'%'])
-%     set(gca,'Fontsize',13)
-% end
-% for i=1:nm_comp
-%     subplot(2,nm_comp,nm_comp+i)
-%     plot(1:length(V(:,i)), V(:,i),'-o','LineWidth',2);
-%     grid on
-%     ylabel(['PC',num2str(i),'-',num2str(PC_exp(i)),'%'])
-%     xtickangle(90)
-%     set(gca,'xtick',1:length(V(:,i)),'xticklabel',labelss)
-%     set(gca,'Fontsize',13)
-% end
-
-
 
 
 %% the sactter plot
