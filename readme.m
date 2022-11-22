@@ -4,7 +4,7 @@
 
 %% Descriptions of the datasets under the folder 'simulated datasets'
 
-%%%%%  codes and data under the subfolder 'Insulin resistance in Skeletal muscle'
+%%%%%  data under the subfolder 'Insulin resistance in Skeletal muscle'
 %  The file named 'Simu_6meta_8time_alpha02_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle
 %  as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
 
@@ -18,7 +18,7 @@
 %  as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.4. 
 
 
-%%%%%  codes and data under the subfolder 'Betacell dysfunction' 
+%%%%%  data under the subfolder 'Betacell dysfunction' 
 %  The file named 'Simu_6meta_8time_alpha02_betacell_balance.mat' stores the dataset generated with Beta-cell dysfunction 
 %  as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
 
@@ -54,7 +54,7 @@
 
 
 
-%%%%%%%%%%%%  codes and data under the subfolder 'functions'
+%%%%%%%%%%%%  codes under the subfolder 'functions'
 %  The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
 
 %  The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
@@ -64,7 +64,7 @@
 
 
 
-%%%%%%%%%%%%  codes and data under the under the subfolder 'stability_CP_factors'
+%%%%%%%%%%%%  codes and data under the subfolder 'stability_CP_factors'
 %%%%%  codes and data under the subsubfolder 'Insulin resistance in Skeletal muscle' 
 %  The file named 'compare_diffalpha_balance_unbalance_full.m' is for
 %  comparing (computing the factor match scores) the factors extracted from
