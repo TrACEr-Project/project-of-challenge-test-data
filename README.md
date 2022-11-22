@@ -14,12 +14,10 @@ All the packages can be installed as a subfolder under Matlab path
 
 ## Descriptions of the datasets under the folder 'simulated datasets'
 * ### datasets under the subfolder 'Insulin resistance in Skeletal muscle'
-1.   The file named 'Simu_6meta_8time_alpha02_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
-2.   The file named 'Simu_6meta_8time_alpha02_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.2. 
-
-3.  The file named 'Simu_6meta_8time_alpha04_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.4. 
-
-4.  The file named 'Simu_6meta_8time_alpha04_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.4. 
+        1. The file named 'Simu_6meta_8time_alpha02_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
+        2. The file named 'Simu_6meta_8time_alpha02_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.2. 
+        3. The file named 'Simu_6meta_8time_alpha04_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.4. 
+        4. The file named 'Simu_6meta_8time_alpha04_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.4. 
 * ### datasets under the subfolder 'Betacell dysfunction' 
 1.   The file named 'Simu_6meta_8time_alpha02_betacell_balance.mat' stores the dataset generated with Beta-cell dysfunction as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
 
@@ -40,9 +38,9 @@ All the packages can be installed as a subfolder under Matlab path
 *  The file named 'PCA_T0.m' is an example code for  modeling the fasting-state (T0) data with PCA model using the svd function from Matlab.
 
 *  codes under the subfolder 'functions'
-1. #### The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
-2. #### The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
-3. #### The file named 'TC.m' is for computing the Tucker congruency.
+   1.  The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
+   2.  The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
+   3.  The file named 'TC.m' is for computing the Tucker congruency.
 
 *  codes and data under the subfolder 'stability_CP_factors'
 1. ###### codes and data under the subsubfolder 'Insulin resistance in Skeletal muscle' 
