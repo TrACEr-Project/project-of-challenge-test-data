@@ -1,10 +1,19 @@
-% This file lists the descriptions of the datasets and the codes we used in
-% the paper ''Analyzing postprandial metabolomics data using multiway models: A simulation study''
+%% This repository contains the descriptions of the datasets and the codes we used in the paper 'Analyzing postprandial metabolomics data using multiway models: A simulation study'
+
+
+%% The implementation uses the following toolboxes/packages which need to be downloaded and installed separately:
+% Brett W. Bader, Tamara G. Kolda and others. MATLAB Tensor Toolbox, Version 3.1. Available online at https://www.tensortoolbox.org, 2020
+% S. Becker, “L-BFGS-B C code with Matlab wrapper,” 2019. Available online at https://github.com/stephenbeckr/L-BFGS-B-C; see also: R. H. Byrd, P. Lu and J. Nocedal. A Limited Memory Algorithm for Bound Constrained Optimization, (1995), SIAM Journal on Scientific and Statistical Computing , 16, 5, pp. 1190-1208
+% C.A. Andersson and R. Bro, 'The N-way Toolbox for MATLAB', Chemometrics & Intelligent Laboratory Systems. 52 (1):1-4, 2000. Available online at http://www.models.life.ku.dk/nwaytoolbox
+% Eigenvector Research, DataSet Object, available online at https://eigenvector.com/software/dataset-object/
+
+%% All the implementations are tested on MacOS version 10.15.3
+
 
 
 %% Descriptions of the datasets under the folder 'simulated datasets'
 
-%%%%%  codes and data under the subfolder 'Insulin resistance in Skeletal muscle'
+%%%%%  data under the subfolder 'Insulin resistance in Skeletal muscle'
 %  The file named 'Simu_6meta_8time_alpha02_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle
 %  as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
 
@@ -18,7 +27,7 @@
 %  as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.4. 
 
 
-%%%%%  codes and data under the subfolder 'Betacell dysfunction' 
+%%%%%  data under the subfolder 'Betacell dysfunction' 
 %  The file named 'Simu_6meta_8time_alpha02_betacell_balance.mat' stores the dataset generated with Beta-cell dysfunction 
 %  as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
 
@@ -54,7 +63,7 @@
 
 
 
-%%%%%%%%%%%%  codes and data under the subfolder 'functions'
+%%%%%%%%%%%%  codes under the subfolder 'functions'
 %  The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
 
 %  The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
@@ -64,7 +73,7 @@
 
 
 
-%%%%%%%%%%%%  codes and data under the under the subfolder 'stability_CP_factors'
+%%%%%%%%%%%%  codes and data under the subfolder 'stability_CP_factors'
 %%%%%  codes and data under the subsubfolder 'Insulin resistance in Skeletal muscle' 
 %  The file named 'compare_diffalpha_balance_unbalance_full.m' is for
 %  comparing (computing the factor match scores) the factors extracted from

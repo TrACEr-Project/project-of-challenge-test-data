@@ -13,8 +13,7 @@ addpath(genpath('./functions'))
 %% add dataset path
 addpath(genpath('../simulated_datasets'))
 
-%% add other apckages to your path!
-addpath(genpath('.../dataset'))
+%% add other apckages to path
 addpath(genpath('.../tensor_toolbox-v3.1')) %Tensor toolbox is needed;  MATLAB Tensor Toolbox. Copyright 2017, Sandia Corporation, http://www.tensortoolbox.org/
 addpath(genpath('.../L-BFGS-B-C-master')) % LBFGS-B implementation is needed; download here: https://github.com/stephenbeckr/L-BFGS-B-C
 addpath(genpath('.../nway331')) % Nway toolbox is needed for computing core consistency; download here: http://www.models.life.ku.dk/nwaytoolbox

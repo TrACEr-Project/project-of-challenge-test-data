@@ -18,7 +18,7 @@ clc
 close all
 %% add auxilary functions to path
 addpath(genpath('./functions'))
-%% add other apckages to your path!
+%% add other apckages to path
 addpath(genpath('.../dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
 addpath(genpath('.../poblano_toolbox_1.1')) % Poblano_toolbox is needed; download here: https://github.com/sandialabs/poblano_toolbox
 %%
