@@ -31,20 +31,20 @@ All the packages can be installed as a subfolder under Matlab path
 
 ## Descriptions of the codes under the folder 'code for the simulated data'
 
-### The file named 'CP_fulldata.m' is an example code for modeling the full-dynamic data with CP model using the tensor toolbox with multiple initialisations.
+*  The file named 'CP_fulldata.m' is an example code for modeling the full-dynamic data with CP model using the tensor toolbox with multiple initialisations.
 
-### The file named 'CP_subtractT0.m' is an example code for modeling the T0-corrected data with CP model using the tensor toolbox with multiple initialisations.
+*  The file named 'CP_subtractT0.m' is an example code for modeling the T0-corrected data with CP model using the tensor toolbox with multiple initialisations.
 
-### The file named 'CP_R4_full_split10_check.m' is an example code for checking the replicability of the CP model to the full-dynamic data.
+*  The file named 'CP_R4_full_split10_check.m' is an example code for checking the replicability of the CP model to the full-dynamic data.
 
-### The file named 'PCA_T0.m' is an example code for  modeling the fasting-state (T0) data with PCA model using the svd function from Matlab.
+*  The file named 'PCA_T0.m' is an example code for  modeling the fasting-state (T0) data with PCA model using the svd function from Matlab.
 
-### codes under the subfolder 'functions'
-#### The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
-#### The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
-#### The file named 'TC.m' is for computing the Tucker congruency.
+*  codes under the subfolder 'functions'
+1. #### The file named 'unique_test_CP.m' is an example code for numerically checking the uniqueness of the CP factorization.
+2. #### The file named 'removesubject.m' is for removing a subset of subjects from the considered dataset.
+3. #### The file named 'TC.m' is for computing the Tucker congruency.
 
-### codes and data under the subfolder 'stability_CP_factors'
+*  codes and data under the subfolder 'stability_CP_factors'
 #### codes and data under the subsubfolder 'Insulin resistance in Skeletal muscle' 
 ##### The file named 'compare_diffalpha_balance_unbalance_full.m' is for  comparing (computing the factor match scores) the factors extracted from the full-dynamic data from different datasets (low vs. high within-group variation and balanced vs. unbalanced samples) with the between-group variation as the Insulin resistance in Skeletal muscle.
 ##### The file named 'compare_diffalpha_balance_unbalance_subtr.m' is for comparing (computing the factor match score) the factors extracted from the T0-corrected data from different datasets (low vs. high within-group variation and balanced vs. unbalanced samples) with the between-group variation as the Insulin resistance in Skeletal muscle.
