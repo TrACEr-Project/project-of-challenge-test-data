@@ -4,6 +4,7 @@
 % In addition, parts of the scripts may require the dataset object (https://eigenvector.com/software/dataset-object/), publically available.
 % For core consistency computation, we also use the corcord function from the Nway toolbox (http://www.models.life.ku.dk/nwaytoolbox).
 
+clear all
 
 %% add auxilary functions to path
 addpath(genpath('./functions'))
@@ -11,11 +12,7 @@ addpath(genpath('./functions'))
 %% add dataset path
 addpath(genpath('../simulated_datasets'))
 
-<<<<<<< HEAD
-%% add other apckages to your path!
-=======
 %% add other apckages to path
->>>>>>> 8c9b6eccc3076a8f79d1893041e4add838ddeb9d
 addpath(genpath('.../tensor_toolbox-v3.1')) %Tensor toolbox is needed;  MATLAB Tensor Toolbox. Copyright 2017, Sandia Corporation, http://www.tensortoolbox.org/
 addpath(genpath('.../L-BFGS-B-C-master')) % LBFGS-B implementation is needed; download here: https://github.com/stephenbeckr/L-BFGS-B-C
 addpath(genpath('.../nway331')) % Nway toolbox is needed for computing core consistency; download here: http://www.models.life.ku.dk/nwaytoolbox
@@ -109,7 +106,7 @@ end
 
 
 %% CP MODEL
-nb_starts =20;
+nb_starts =60;
 nm_comp=4;
 optionsCP.factr=1e6;
 optionsCP.maxIts = 10000;
@@ -138,17 +135,16 @@ end
 % 0 -> NOT unique
 % 1 -> Unique
 % 2 -> Inconclusive, need more random starts
-unique_test = unique_test_CP(Fac_X, goodness_X(:,2), goodness_X1)
+unique_test = unique_test_CP(Fac_X, goodness_X(:,2), goodness_X1);
 
 %%  Get the best Factorization & fit,TC, CC info
 [er,index]=sort(goodness_X(:,2),'ascend');
 Fac = Fac_X{index(1)};
 out_X_best = out_X{index(1)};
-exit_info=goodness_X1(index(1))
-uniqueness=unique_test
-fit=out_X_best.Fit
-Consistency = corcond(X.data,normalize(Fac,1),[],0)
-tc=TC(Fac.U)
+exit_info=goodness_X1(index(1));
+fit=out_X_best.Fit;
+Consistency = corcond(X.data,normalize(Fac,1),[],0);
+tc=TC(Fac.U);
 
 %% compute the p-val
 for r=1:nm_comp
@@ -156,7 +152,7 @@ for r=1:nm_comp
     r2=Fac.U{1}(sub_abnormal,r);
     [h, p(r), ~, tt]=ttest2(r1, r2, 'alpha', 0.05, 'vartype','unequal');
 end
-[pmin,index_pmin]=min(p)
+[pmin,index_pmin]=min(p);
 
 
 %% plot the factors

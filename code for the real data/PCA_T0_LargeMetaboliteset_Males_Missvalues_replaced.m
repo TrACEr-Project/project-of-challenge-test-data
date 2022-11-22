@@ -62,7 +62,7 @@ W(find(isnan(X.data)))=0;
 W=tensor(W);
 X(find(isnan(X.data)))=0;
 % set parameters for spca_wopt 
-nb_starts =60;
+nb_starts =10;
 nm_comp=2;
 options=ncg('defaults');
 options.DisplayIters=1000;
@@ -94,7 +94,7 @@ end
 good_flag = find(good_index== 3| good_index==0 );
 [er,index]=sort(goodness_X(good_flag,2),'ascend');
 Fac = Fac_X{index(1)}; % 
-fit=   goodness_X(index(1),1)
+fit=   goodness_X(index(1),1);
 %% Get the approximated data
 data_T0_approx=Fac.U{1}*diag(Fac.lambda)*(Fac.U{2})'; 
 

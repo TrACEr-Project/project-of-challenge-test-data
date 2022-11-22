@@ -4,8 +4,6 @@
 % We use Tensor Toolbox
 
 clear all
-clc
-close all
 
 %% add other apckages to your path
 addpath(genpath('.../tensor_toolbox-v3.1')) %Tensor toolbox is needed;  MATLAB Tensor Toolbox. Copyright 2017, Sandia Corporation, http://www.tensortoolbox.org/

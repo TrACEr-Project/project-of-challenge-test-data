@@ -85,7 +85,7 @@ end
 
 
 %% numerically check the uniqueness of the CP factorization
-unique_test=unique_test_CP(Fac_X,goodness_X(:,2),goodness_X1)
+unique_test=unique_test_CP(Fac_X,goodness_X(:,2),goodness_X1);
 good_flag = find(goodness_X1(:) == 'CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_<=_PGTOL.' | goodness_X1(:) == 'CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH.');
 
 %% Get the best CP factorization
@@ -93,11 +93,10 @@ good_flag = find(goodness_X1(:) == 'CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_<=_P
 Fac = Fac_X{index(1)};
 
 %% Check fit, exit_info, core consistency, tucker congruency for the CP decomposition
-uniqueness=unique_test
-fit= goodness_X(index(1),1)
-exit_info=goodness_X1(index(1))
-Consistency = corcond(X.data,normalize(Fac,1),[],0)
-tc=TC(Fac.U)
+fit= goodness_X(index(1),1);
+exit_info=goodness_X1(index(1));
+Consistency = corcond(X.data,normalize(Fac,1),[],0);
+tc=TC(Fac.U);
 
 %% BMI index
 index_Under=find(NMR_remove.class{1,2}==4);

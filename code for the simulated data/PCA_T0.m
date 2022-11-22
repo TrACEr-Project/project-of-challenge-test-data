@@ -51,8 +51,8 @@ for r=1:nm_comp
     r2=U(sub_abnormal,r);
     [h, p(r), ~, tt]=ttest2(r1, r2, 'alpha', 0.05, 'vartype','unequal');
 end
-pmin=min(p)
-index_pmin=find(p==pmin)
+pmin=min(p);
+index_pmin=find(p==pmin);
 
 %% plot the explained variance
 Sdiag=diag(S);
