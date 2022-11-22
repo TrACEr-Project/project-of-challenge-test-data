@@ -11,5 +11,3 @@ for i=1:m(1)
     end
 end
 z=prod(y);
-
-

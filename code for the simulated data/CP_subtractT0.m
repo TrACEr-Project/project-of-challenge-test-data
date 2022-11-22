@@ -8,18 +8,21 @@
 clear all
 
 %% add auxilary functions to path
-addpath(genpath('.\functions'))
-%% add dataset path
-addpath(genpath('..\simulated_datasets\Betacell_dysfunction'))
-%% add other apckages to your path!
-addpath(genpath('...\tensor_toolbox-v3.1')) %Tensor toolbox is needed;  MATLAB Tensor Toolbox. Copyright 2017, Sandia Corporation, http://www.tensortoolbox.org/
-addpath(genpath('...\L-BFGS-B-C-master')) % LBFGS-B implementation is needed; download here: https://github.com/stephenbeckr/L-BFGS-B-C
-addpath(genpath('...\nway331')) % Nway toolbox is needed for computing core consistency; download here: http://www.models.life.ku.dk/nwaytoolbox
-addpath(genpath('...\dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
+addpath(genpath('./functions'))
 
+%% add dataset path
+addpath(genpath('../simulated_datasets'))
+
+%% add other apckages to your path!
+addpath(genpath('.../dataset'))
+addpath(genpath('.../tensor_toolbox-v3.1')) %Tensor toolbox is needed;  MATLAB Tensor Toolbox. Copyright 2017, Sandia Corporation, http://www.tensortoolbox.org/
+addpath(genpath('.../L-BFGS-B-C-master')) % LBFGS-B implementation is needed; download here: https://github.com/stephenbeckr/L-BFGS-B-C
+addpath(genpath('.../nway331')) % Nway toolbox is needed for computing core consistency; download here: http://www.models.life.ku.dk/nwaytoolbox
+addpath(genpath('.../dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
 
 %%  load dataset
-load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
+load('Simu_6meta_8time_alpha02_IRM_balance.mat','X_orig')
+
 %% remove subjects with blow-up solution when solving ODE / remove outliers
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});

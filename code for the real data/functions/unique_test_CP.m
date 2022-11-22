@@ -25,7 +25,7 @@ if length(good_flag)>=1
     F_round = round(erF(good_flag),7);
     best_F_index = good_flag(F_round == min(F_round));
     if length(best_F_index) < 2
-        F_round = round(erF(good_flag),5);
+        F_round = round(erF(good_flag),1);
         best_F_index = good_flag(F_round == min(F_round));
     end
 else

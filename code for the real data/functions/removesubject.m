@@ -9,5 +9,3 @@ function Y=removeoutlier(Y,outlier_pid)
 Y=Y(index,:,:);
 
 end
-
-

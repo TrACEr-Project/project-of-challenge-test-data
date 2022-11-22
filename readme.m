@@ -180,6 +180,8 @@
 %  The file named 'PCA_T0_LargeMetaboliteset_Males_Missvalues_replaced.m'
 %  is for modeling the fasting-state real data with PCA model using the svd function from Matlab, 
 %  missing values being replaced by approximations.
+%  We compute the approximations of the missing values using weighted optimization (similar to the way of fitting CP model to incomplete data in
+%  'Scalable tensor factorizations for incomplete data' by E. Acar, D.M. Dunlavy, T.G. Kolda, and M. Mørup).
 
 
 %%%%%%%%%%%%  codes under the subfolder 'functions'
@@ -192,8 +194,8 @@
 %  The file named 'removeisnan.m' is used to remove the subjects and features with lots of missing values
 
 %%%%%  codes under the subsubfolder 'spca_wopt_functions'
-%  The functions in this subsubfolder are used to use weighted optimization for fitting PCA to incomplete data, 
-%  similarly as the way to fit the CP model to incomplete data 
+%  The functions in this subsubfolder are for using weighted optimization to fit PCA to incomplete data, 
+%  similarly as the way of fitting the CP model to incomplete data 
 %  introduced in the paper ' Scalable tensor factorizations for incomplete data' by E. Acar, 
 %  D.M. Dunlavy, T.G. Kolda, and M. Mørup.  
 
