@@ -13,13 +13,13 @@ All the packages can be installed as a subfolder under Matlab path
 
 
 ## Descriptions of the datasets under the folder 'simulated datasets'
-### datasets under the subfolder 'Insulin resistance in Skeletal muscle'
-#### The file named 'Simu_6meta_8time_alpha02_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
-#### The file named 'Simu_6meta_8time_alpha02_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.2. 
+* datasets under the subfolder 'Insulin resistance in Skeletal muscle'
+* 1.  The file named 'Simu_6meta_8time_alpha02_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
+* 2. The file named 'Simu_6meta_8time_alpha02_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.2. 
 
-#### The file named 'Simu_6meta_8time_alpha04_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.4. 
+* 3.  The file named 'Simu_6meta_8time_alpha04_IRM_balance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.4. 
 
-#### The file named 'Simu_6meta_8time_alpha04_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.4. 
+* 4.  The file named 'Simu_6meta_8time_alpha04_IRM_unbalance.mat' stores the dataset generated with Insulin resistance in Skeletal muscle as the between-group variation (70 control and 30 diseased subjects) and the within-group variation at level alpha=0.4. 
 ###  datasets under the subfolder 'Betacell dysfunction' 
 #### The file named 'Simu_6meta_8time_alpha02_betacell_balance.mat' stores the dataset generated with Beta-cell dysfunction as the between-group variation (50 control and 50 diseased subjects) and the within-group variation at level alpha=0.2. 
 
