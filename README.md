@@ -4,10 +4,10 @@ This repository contains the descriptions of the datasets and the codes we used 
 All the implementations are tested on MacOS version 10.15.3
 
 ## Packages needed for implementation
-### Brett W. Bader, Tamara G. Kolda and others. MATLAB Tensor Toolbox, Version 3.1. Available online at https://www.tensortoolbox.org, 2020
-### S. Becker, “L-BFGS-B C code with Matlab wrapper,” 2019. Available online at https://github.com/stephenbeckr/L-BFGS-B-C; see also: R. H. Byrd, P. Lu and J. Nocedal. A Limited Memory Algorithm for Bound Constrained Optimization, (1995), SIAM Journal on Scientific and Statistical Computing , 16, 5, pp. 1190-1208
-### C.A. Andersson and R. Bro, 'The N-way Toolbox for MATLAB', Chemometrics & Intelligent Laboratory Systems. 52 (1):1-4, 2000. Available online at http://www.models.life.ku.dk/nwaytoolbox
-### Eigenvector Research, DataSet Object, available online at https://eigenvector.com/software/dataset-object/
+*  Brett W. Bader, Tamara G. Kolda and others. MATLAB Tensor Toolbox, Version 3.1. Available online at https://www.tensortoolbox.org, 2020
+* S. Becker, “L-BFGS-B C code with Matlab wrapper,” 2019. Available online at https://github.com/stephenbeckr/L-BFGS-B-C; see also: R. H. Byrd, P. Lu and J. Nocedal. A Limited Memory Algorithm for Bound Constrained Optimization, (1995), SIAM Journal on Scientific and Statistical Computing , 16, 5, pp. 1190-1208
+* C.A. Andersson and R. Bro, 'The N-way Toolbox for MATLAB', Chemometrics & Intelligent Laboratory Systems. 52 (1):1-4, 2000. Available online at http://www.models.life.ku.dk/nwaytoolbox
+* Eigenvector Research, DataSet Object, available online at https://eigenvector.com/software/dataset-object/
 
 All the packages can be installed as a subfolder under Matlab path
 
