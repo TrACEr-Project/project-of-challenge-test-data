@@ -22,12 +22,11 @@ addpath(genpath('./functions'))
 addpath(genpath('.../dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
 addpath(genpath('.../poblano_toolbox_1.1')) % Poblano_toolbox is needed; download here: https://github.com/sandialabs/poblano_toolbox
 %%
-load('NMR+Gene+SNP+Metav3_July4_2022.mat') %% load data
+load('data.mat') %% load the real NMR data (dataset format)
 
 %% remove outliers
-pid_list = str2num(NMR.label{1});
-outlier_pid =[142,79,342,250,90,335,312];
-NMR_remove=remove_outliers(NMR,outlier_pid);
+outlier_pid =[]; % remove outliers
+NMR_remove=removesubject(NMR,outlier_pid);
 
 %% remove the metabolites with lots of missing values
 NMR_remove=removeisnan(NMR_remove);
