@@ -18,11 +18,10 @@ addpath(genpath('.../nway331')) % Nway toolbox is needed for computing core cons
 addpath(genpath('.../dataset')) % dataset object is needed; download here: https://eigenvector.com/software/dataset-object/
 
 %%
-load('NMR+Gene+SNP+Metav3_July4_2022.mat') %% load the real data
+load('data.mat') %% load the real NMR data (dataset format)
 
 %% remove outliers
-pid_list = str2num(NMR.label{1});
-outlier_pid =[142,79,342,250,90,335,312];
+outlier_pid =[]; % remove outliers
 NMR_remove=removesubject(NMR,outlier_pid);
 
 %% remove the metabolites with lots of missing values
