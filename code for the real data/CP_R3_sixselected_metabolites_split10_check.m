@@ -27,31 +27,18 @@ NMR_remove=removesubject(NMR,outlier_pid);
 %% remove the metabolites with lots of missing values
 NMR_remove=removeisnan(NMR_remove);
 
-%% select the large set of metabolites (162 measurements)
-selected_metabolite_index = find(NMR_remove.class{3,1}==1 | NMR_remove.class{3,1}==2);
+%% select the six metabolites showing up in the metabolic model
+selected_metabolite_index = [249 70 72 71 61 74];
 NMR_remove= NMR_remove(:,:,selected_metabolite_index);
 
-%% choose male(2)/female(1)
-selected_gender_index =find(NMR_remove.class{1,1}==2);
-NMR_remove= NMR_remove(selected_gender_index,:,:);
-
-
-%% BMI index
-index_Under=find(NMR_remove.class{1,2}==4);
-index_normal=find(NMR_remove.class{1,2}==1);
-index_obesity=find(NMR_remove.class{1,2}==2);
-index_over=find(NMR_remove.class{1,2}==3);
-sub_normal=[index_Under,index_normal]; % Low BMI group
-sub_abnormal=[index_over,index_obesity]; % High BMI group
-
-% rearrange the subjects so that the Low BMI subjects appears first followed by High BMI subjects
-index_perm=[sub_normal, sub_abnormal]; 
+%%
 % data considered, before split
-Y_rem=NMR_remove(index_perm,:,:);
+Y_rem=NMR_remove;
 
 % kk (=10) round of split10
 for kk=1:10
-    S_perm=[randperm(length(sub_normal)),randperm(length(sub_abnormal))+length(sub_normal)];
+    clearvars -except Y_rem Results_all Results kk
+    S_perm=[randperm(size(Y_rem.data,1))];
     Y_split_left=cell(1,10);
     Results=cell(1,10);
     for i=1:10
@@ -62,7 +49,8 @@ for kk=1:10
         Results{i}.Sub_rem=S_perm_rem;
     end
     for ii=1:length(Y_split_left)
-        X=tensor(Y_split_left{ii}.data(:,2:end,:)-Y_split_left{ii}.data(:,1,:));
+        clearvars -except Y_rem Results_all Results Y_split_left ii kk
+        X=tensor(Y_split_left{ii}.data);
         % preprocess the data
         s=size(X);
         X_center=X.data-repmat(nanmean(X.data,1),s(1),1);
@@ -80,7 +68,7 @@ for kk=1:10
         W=tensor(W);
         X(find(isnan(X.data)))=0;
         nb_starts =20;
-        nm_comp=2;
+        nm_comp=3;
         optionsCP.factr=1e3;
         optionsCP.maxIts = 10000;
         optionsCP.maxTotalITs=50000;
@@ -132,10 +120,9 @@ end
 %% 
 %   compute the factor match score (FMS) by the two sets of factors (only use the factors on the metabolites and time modes) 
 %   extracted from any two datasets from all splits 
-
 for kk=1:10
     for ii=1:10
-        Fac_rem_submode{(kk-1)*10+ii}=ktensor(Results_all{kk}.Results{ii}.Fac.lambda,...
+        Fac_rem_submode{1,(kk-1)*10+ii}=ktensor(Results_all{kk}.Results{ii}.Fac.lambda,...
                                               Results_all{kk}.Results{ii}.Fac.U{2},...
                                               Results_all{kk}.Results{ii}.Fac.U{3});
     end
@@ -144,7 +131,7 @@ m=0;
 for k=1:length(Fac_rem_submode)
     for l=k+1:length(Fac_rem_submode)
         m=m+1;
-        [scores_M_T(m), Permuted_Fac_M_T{m}] = score(Fac_rem_submode{k},Fac_rem_submode{l},'lambda_penalty',false);
+        [scores_M_T(m), Permuted_Fac_M_T{m}] = score(Fac_rem_submode{1,k},Fac_rem_submode{1,l},'lambda_penalty',false);
     end
 end
 

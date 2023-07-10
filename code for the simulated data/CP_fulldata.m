@@ -22,12 +22,38 @@ addpath(genpath('.../dataset')) % dataset object is needed; download here: https
 load('Simu_6meta_8time_alpha02_IRM_balance.mat','X_orig')
 
 
-%% remove subjects with blow-up solution when solving ODE / remove outliers
+%% remove subjects with blow-up solution when solving ODE 
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});
 outlier_index=[nr_sub_zeros];
 outlier_pid=pid_list(outlier_index);
 X_rem=removesubject(X_orig,outlier_pid);
+
+
+% %% add noise to the data if needed
+% 
+% ll=0;eta0=0.15;
+% for j=1:size(X_rem.data,2)
+%     for k=1:size(X_rem.data,3)
+%         ll=ll+1;
+%         rng(ll,'twister')
+%          eta{1,ll}=randn((size(X_rem.data,1)),1);
+%          X_new(:,j,k)=X_rem.data(:,j,k)+eta0*eta{1,ll}/norm(eta{1,ll})*norm(X_rem.data(:,j,k));
+% %       if min(X_new(:,j,k))<0
+% %           i=find(squeeze(X_new(:,j,k))==min(squeeze(X_new(:,j,k))));
+% %             display(['subject ', num2str(i),', metabolite ',num2str(j), ', time point ',num2str(k) ' has a negative value'])
+% %       end
+%     end
+% end
+% X_new(find(X_new(:)<0))=0;
+% X_rem.data=X_new;
+
+%% remove outliers if needed
+pid_list=str2num(X_rem.label{1});
+outlier_index=[];
+outlier_pid=pid_list(outlier_index);
+X_rem=removesubject(X_rem,outlier_pid);
+
 
 
 %% full dynamic data
@@ -41,7 +67,7 @@ sub_abnormal=find(X_rem.class{1,1}==2);
 
 
 %% plot the raw data
-labelss = {'Ins','GLC','Pyr','Lac','Ala','Bhb'};
+labelss = {'Ins','Glc','Pyr','Lac','Ala','Bhb'};
 time_value=[0 0.25 0.5 1 1.5 2 2.5 4];
 figure
 for i=1:s(2)
@@ -106,7 +132,7 @@ end
 
 
 %% CP MODEL
-nb_starts =60;
+nb_starts =32;
 nm_comp=4;
 optionsCP.factr=1e6;
 optionsCP.maxIts = 10000;

@@ -26,7 +26,7 @@ All the packages should be installed as a subfolder under Matlab path
 
 ## Descriptions of the codes under the folder 'code for the simulated data'
 
-*  The file named 'CP_fulldata.m' is an example code for modeling the full-dynamic data with CP model using the tensor toolbox with multiple initialisations
+*  The file named 'CP_fulldata.m' is an example code for modeling the full-dynamic (noisy/noiseless) data with the CP model using the tensor toolbox with multiple initialisations
 
 *  The file named 'CP_subtractT0.m' is an example code for modeling the T0-corrected data with CP model using the tensor toolbox with multiple initialisations
 
@@ -65,9 +65,8 @@ All the packages should be installed as a subfolder under Matlab path
 
 ## Descriptions of the codes under the folder 'code for the real data'
 
-*  The file named 'CP_T0corrected_LargeMetaboliteset_Males.m' is the code for  modeling the T0-corrected real data (only male subjects and 162 measurements) with CP model using the tensor toolbox with multiple initialisations
-*  The file named 'CP_R2_T0subtr_split10_check.m' is an example code for checking the replicability of the CP model to the T0-corrected real data
-* The file named 'PCA_T0_LargeMetaboliteset_Males_Missvalues_replaced.m' is for modeling the fasting-state real data with PCA model using the svd function from Matlab, missing values being replaced by approximations; we compute the approximations of the missing values using weighted optimization (similar to the way of fitting CP model to incomplete data in 'Scalable tensor factorizations for incomplete data' by E. Acar, D.M. Dunlavy, T.G. Kolda, and M. Mørup)
+*  The file named 'CP_R3_sixselected_metabolites.m' is the code for modeling the T0-corrected real data (with six selected metabolites) with CP model using the tensor toolbox with multiple initialisations
+*  The file named 'CP_R3_sixselected_metabolites_split10_check.m' is an example code for checking the replicability of the CP model to the T0-corrected real data
 
 
 * codes under the subfolder 'functions'
@@ -76,4 +75,4 @@ All the packages should be installed as a subfolder under Matlab path
    * The file named 'TC.m' is for computing the Tucker congruence
    * The file named 'removeisnan.m' is used to remove the subjects and features with 70% missing values
    * codes under the subsubfolder 'spca_wopt_functions'
-     * The functions in this subsubfolder are for using weighted optimization to fit PCA to incomplete data, similarly as the way of fitting the CP model to incomplete data introduced in the paper ' Scalable tensor factorizations for incomplete data' by E. Acar,  D.M. Dunlavy, T.G. Kolda, and M. Mørup.  
+    

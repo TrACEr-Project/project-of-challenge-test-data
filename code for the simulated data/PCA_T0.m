@@ -9,12 +9,37 @@ addpath(genpath('..\simulated_datasets\Betacell_dysfunction'))
 
 %%  load dataset
 load('Simu_6meta_8time_alpha02_betacell_balance.mat','X_orig')
-%% remove subjects with blow-up solution when solving ODE / remove outliers
+%% remove subjects with blow-up solution when solving ODE 
 nr_sub_zeros=find(X_orig.class{1,2}==2); % subjects with blow-up solution
 pid_list=str2num(X_orig.label{1});
-outlier_index=[nr_sub_zeros]; 
+outlier_index=[nr_sub_zeros];
 outlier_pid=pid_list(outlier_index);
 X_rem=removesubject(X_orig,outlier_pid);
+
+
+% %% add noise to the data 
+% 
+% ll=0;eta0=0.15;
+% for j=1:size(X_rem.data,2)
+%     for k=1:size(X_rem.data,3)
+%         ll=ll+1;
+%         rng(ll,'twister')
+%          eta{1,ll}=randn((size(X_rem.data,1)),1);
+%          X_new(:,j,k)=X_rem.data(:,j,k)+eta0*eta{1,ll}/norm(eta{1,ll})*norm(X_rem.data(:,j,k));
+% %       if min(X_new(:,j,k))<0
+% %           i=find(squeeze(X_new(:,j,k))==min(squeeze(X_new(:,j,k))));
+% %             display(['subject ', num2str(i),', metabolite ',num2str(j), ', time point ',num2str(k) ' has a negative value'])
+% %       end
+%     end
+% end
+% X_new(find(X_new(:)<0))=0;
+% X_rem.data=X_new;
+
+%% remove outliers if needed
+pid_list=str2num(X_rem.label{1});
+outlier_index=[];
+outlier_pid=pid_list(outlier_index);
+X_rem=removesubject(X_rem,outlier_pid);
 
 
 %% consider the T0 data
